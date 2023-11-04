@@ -5,13 +5,16 @@ using UnityEngine;
 public class CameraSwitch : MonoBehaviour
 {
 
-    public GameObject Camera_1;
-    public GameObject Camera_2;
+    public GameObject[] Cameras;
     public int Manager;
 
     // Start is called before the first frame update
     void Start()
     {
+        foreach (GameObject c in Cameras)
+        {
+            if (c != Cameras[0]) c.SetActive(false);
+        }
 
     }
 
@@ -23,27 +26,14 @@ public class CameraSwitch : MonoBehaviour
 
     void ManageCamera()
     {
-        if (Manager == 1)
-        {
-            Cam_1();
-            Manager = 2;
-        }
-        else if (Manager == 2)
-        {
-            Cam_2();
-            Manager = 1;
-        }
-    }
 
-    void Cam_1()
-    {
-        Camera_1.SetActive(true);
-        Camera_2.SetActive(false);
-    }
+        foreach (GameObject c in Cameras)
+        {
+            if (c != Cameras[Manager]) c.SetActive(false);
+            else c.SetActive(true);
+        }
+        if (Manager == Cameras.Length - 1) Manager = 0;
+        else Manager++;
 
-    void Cam_2()
-    {
-        Camera_2.SetActive(true);
-        Camera_1.SetActive(false);
     }
 }
