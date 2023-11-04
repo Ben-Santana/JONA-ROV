@@ -1,2 +1,2 @@
 # JONA-ROV
- Physics simulation for JONA @ Sunk Robotics
+ Physics simulation for JONA @ Sunk Robotics ( Unity )
