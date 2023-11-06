@@ -60,6 +60,8 @@ public class Thruster : MonoBehaviour
             if (Input.GetKey(KeyCode.Space)) thrustAll(vel);
             if (Input.GetKey(KeyCode.W)) forwardThrust(vel);
             if (Input.GetKey(KeyCode.S)) backThrust(vel);
+            if (Input.GetKey(KeyCode.Q)) leftThrust(vel);
+            if (Input.GetKey(KeyCode.E)) rightThrust(vel);
             if (Input.GetKey(KeyCode.A)) leftYaw(vel / 2);
             if (Input.GetKey(KeyCode.D)) rightYaw(vel / 2);
         }
@@ -125,6 +127,22 @@ public class Thruster : MonoBehaviour
         thrust(bottom_forwl, -magnitude, bottom_forwl.forward);
         thrust(bottom_forwr, -magnitude, bottom_forwr.forward);
         thrust(bottom_backl, magnitude, bottom_backl.forward);
+        thrust(bottom_backr, magnitude, bottom_backr.forward);
+    }
+
+    void rightThrust(float magnitude)
+    {
+        thrust(bottom_forwl, magnitude, bottom_forwl.forward);
+        thrust(bottom_forwr, -magnitude, bottom_forwr.forward);
+        thrust(bottom_backl, magnitude, bottom_backl.forward);
+        thrust(bottom_backr, -magnitude, bottom_backr.forward);
+    }
+
+    void leftThrust(float magnitude)
+    {
+        thrust(bottom_forwl, -magnitude, bottom_forwl.forward);
+        thrust(bottom_forwr, magnitude, bottom_forwr.forward);
+        thrust(bottom_backl, -magnitude, bottom_backl.forward);
         thrust(bottom_backr, magnitude, bottom_backr.forward);
     }
 
