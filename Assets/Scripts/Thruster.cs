@@ -6,9 +6,12 @@ public class Thruster : MonoBehaviour
 {
 
     Rigidbody rig;
-    public float speed;
-    private float vel;
-    private bool turningMode = false; // true = yaw |  false = pitch
+    public float speed = 60;
+    private float accel;
+
+    public bool checkWater = false;
+    private bool inWater = true;
+    private bool pitchRoll = false; // true = yaw |  false = pitch
     public Transform top_forwl;
     public Transform top_forwr;
     public Transform top_backl;
@@ -23,47 +26,61 @@ public class Thruster : MonoBehaviour
     void Start()
     {
         rig = GetComponent<Rigidbody>();
-        vel = speed;
+        accel = speed;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        inWater = true;
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        inWater = false;
     }
 
     void Update()
     {
 
-        if (Input.GetKeyDown(KeyCode.Tab)) turningMode = !turningMode;
+        if (Input.GetKeyDown(KeyCode.Tab)) pitchRoll = !pitchRoll;
 
-        if (turningMode)
+
+        if (inWater || !checkWater)
         {
-
-            if (Input.GetKey(KeyCode.LeftShift))
+            if (pitchRoll)
             {
-                vel = -speed;
+
+                if (Input.GetKey(KeyCode.LeftShift))
+                {
+                    accel = -speed;
+                }
+                else accel = speed;
+
+                if (Input.GetKey(KeyCode.Space)) thrustAll(accel);
+                if (Input.GetKey(KeyCode.W)) forwardPitch(accel / 4);
+                if (Input.GetKey(KeyCode.S)) backPitch(accel / 4);
+                if (Input.GetKey(KeyCode.A)) leftRoll(accel / 4);
+                if (Input.GetKey(KeyCode.D)) rightRoll(accel / 4);
+
             }
-            else vel = speed;
-
-            if (Input.GetKey(KeyCode.Space)) thrustAll(vel);
-            if (Input.GetKey(KeyCode.W)) forwardPitch(vel / 4);
-            if (Input.GetKey(KeyCode.S)) backPitch(vel / 4);
-            if (Input.GetKey(KeyCode.A)) leftRoll(vel / 4);
-            if (Input.GetKey(KeyCode.D)) rightRoll(vel / 4);
-
-        }
-        else
-        {
-
-            if (Input.GetKey(KeyCode.LeftShift))
+            else
             {
-                vel = -speed;
+
+                if (Input.GetKey(KeyCode.LeftShift))
+                {
+                    accel = -speed;
+                }
+                else accel = speed;
+
+
+                if (Input.GetKey(KeyCode.Space)) thrustAll(accel);
+                if (Input.GetKey(KeyCode.W)) forwardThrust(accel);
+                if (Input.GetKey(KeyCode.S)) backThrust(accel);
+                if (Input.GetKey(KeyCode.Q)) leftThrust(accel);
+                if (Input.GetKey(KeyCode.E)) rightThrust(accel);
+                if (Input.GetKey(KeyCode.A)) leftYaw(accel / 2);
+                if (Input.GetKey(KeyCode.D)) rightYaw(accel / 2);
             }
-            else vel = speed;
-
-
-            if (Input.GetKey(KeyCode.Space)) thrustAll(vel);
-            if (Input.GetKey(KeyCode.W)) forwardThrust(vel);
-            if (Input.GetKey(KeyCode.S)) backThrust(vel);
-            if (Input.GetKey(KeyCode.Q)) leftThrust(vel);
-            if (Input.GetKey(KeyCode.E)) rightThrust(vel);
-            if (Input.GetKey(KeyCode.A)) leftYaw(vel / 2);
-            if (Input.GetKey(KeyCode.D)) rightYaw(vel / 2);
         }
 
 
